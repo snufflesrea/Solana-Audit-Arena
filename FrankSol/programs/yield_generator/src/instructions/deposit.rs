@@ -20,6 +20,7 @@ pub struct Deposit {
     )]
     pub position: Account<UserPosition>,
     /// CHECK: Source vault from caller program; must sign this CPI.
+    #[account(mut)]
     pub source_vault: Signer,
     /// CHECK: Yield vault PDA receiving deposits.
     #[account(mut, seeds = [VAULT_SEED], bump = state.vault_bump)]

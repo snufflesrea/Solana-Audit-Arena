@@ -1,6 +1,6 @@
 import * as anchor from '@coral-xyz/anchor';
 import { Program } from '@coral-xyz/anchor';
-import { Tokens } from '../target/types/tokens';
+import { Zenon } from '../target/types/zenon';
 import { deserializeMetadata } from '@metaplex-foundation/mpl-token-metadata';
 import { getMint, getAccount } from '@solana/spl-token';
 import { assert } from 'chai';
@@ -12,7 +12,7 @@ describe('Token Initialization', async () => {
   anchor.setProvider(provider);
 
   const payer = (provider.wallet as anchor.Wallet).payer;
-  const program = anchor.workspace.Tokens as Program<Tokens>;
+  const program = anchor.workspace.Zenon as Program<Zenon>;
 
   it('should initialize the token', async () => {
     const {
@@ -21,7 +21,7 @@ describe('Token Initialization', async () => {
       bondingCurvePda,
       metadataAddress,
       marketData,
-    } = await initializeRandomToken(program, payer, MOCK_TOKEN_METADATA_10_000);
+    } = (await initializeRandomToken(program, payer, MOCK_TOKEN_METADATA_10_000));
     // Mint assertions
     const mintInfo = await getMint(provider.connection, mint.publicKey);
     assert.equal(mintInfo.mintAuthority, null, 'Mint authority should be null');
@@ -73,4 +73,5 @@ describe('Token Initialization', async () => {
     assert.equal(metadata.name, MOCK_TOKEN_METADATA_10_000.name);
     assert.equal(metadata.symbol, MOCK_TOKEN_METADATA_10_000.symbol);
   });
+  
 });
